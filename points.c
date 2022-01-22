@@ -33,7 +33,7 @@ read_pts_failed (FILE * inf, points_t * pts)
     pts->y[pts->n] = y;
     pts->n++;
     if (!feof (inf) && pts->n == size) {
-      if (realloc_pts_failed (pts, 2 * size))
+      if (pts->x = realloc_pts_failed (pts, 2 * size))
         return 1;
       else
         size *= 2;
@@ -41,7 +41,7 @@ read_pts_failed (FILE * inf, points_t * pts)
   }
 
   if (pts->n != size)
-    if (realloc_pts_failed (pts, pts->n))
+    if (pts->x = realloc_pts_failed (pts, pts->n))
       return 1;
 
   return 0;

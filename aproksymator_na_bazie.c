@@ -9,32 +9,16 @@
           zmiennej środowiskowej APPROX_BASE_SIZE
 */
 
-/*
- * Funkcje bazowe: n - liczba funkcji a,b - granice przedzialu aproksymacji i
- * - numer funkcji x - wspolrzedna dla ktorej obliczana jest wartosc funkcji
- */
-double
-fi(double a, double b, int n, int i, double x)
+// i -> numer wielomianu
+// x -> parametr
+fi(int i, double x)
 {
-	double		h = (b - a) / (n - 1);
-	double		h3 = h * h * h;
-	int		hi         [5] = {i - 2, i - 1, i, i + 1, i + 2};
-	double		hx      [5];
-	int		j;
-
-	for (j = 0; j < 5; j++)
-		hx[j] = a + h * hi[j];
-
-	if ((x < hx[0]) || (x > hx[4]))
-		return 0;
-	else if (x >= hx[0] && x <= hx[1])
-		return 1 / h3 * (x - hx[0]) * (x - hx[0]) * (x - hx[0]);
-	else if (x > hx[1] && x <= hx[2])
-		return 1 / h3 * (h3 + 3 * h * h * (x - hx[1]) + 3 * h * (x - hx[1]) * (x - hx[1]) - 3 * (x - hx[1]) * (x - hx[1]) * (x - hx[1]));
-	else if (x > hx[2] && x <= hx[3])
-		return 1 / h3 * (h3 + 3 * h * h * (hx[3] - x) + 3 * h * (hx[3] - x) * (hx[3] - x) - 3 * (hx[3] - x) * (hx[3] - x) * (hx[3] - x));
-	else			/* if (x > hx[3]) && (x <= hx[4]) */
-		return 1 / h3 * (hx[4] - x) * (hx[4] - x) * (hx[4] - x);
+	if( i == 0 )
+		return 1;
+	if( i == 1 )
+		return 2*x;
+	
+	return 2*x*fi(i-1, x) - 2*(i-1)*fi(i-2, x);	
 }
 
 /* Pierwsza pochodna fi */

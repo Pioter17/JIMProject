@@ -24,6 +24,13 @@ alloc_spl (spline_t * spl, int n)
   	free(tmpf3);
       	return 1;	
   }
+
+  spl->x = tmpx;
+  spl->f = tmpf;
+  spl->f1 = tmpf1;
+  spl->f2 = tmpf2;
+  spl->f3 = tmpf3;
+
   return 0;
 }
 

@@ -34,27 +34,16 @@ dfi(int i, double x)
 
 /* Druga pochodna fi */
 double
-d2fi(double a, double b, int n, int i, double x)
+d2fi(int i, double x)
 {
-	double		h = (b - a) / (n - 1);
-	double		h3 = h * h * h;
-	int		hi         [5] = {i - 2, i - 1, i, i + 1, i + 2};
-	double		hx      [5];
-	int		j;
-
-	for (j = 0; j < 5; j++)
-		hx[j] = a + h * hi[j];
-
-	if ((x < hx[0]) || (x > hx[4]))
+	if( i == 0 )
 		return 0;
-	else if (x >= hx[0] && x <= hx[1])
-		return 6 / h3 * (x - hx[0]);
-	else if (x > hx[1] && x <= hx[2])
-		return 1 / h3 * (6 * h - 18 * (x - hx[1]));
-	else if (x > hx[2] && x <= hx[3])
-		return 1 / h3 * (6 * h  -18 * (hx[3] - x));
-	else			/* if (x > hx[3]) && (x <= hx[4]) */
-		return 6 / h3 * (hx[4] - x);
+	if( i == 1 )
+		return 0;
+	if( i == 2 )
+		return 8;
+	
+	return 4*dfi(i-1, x) + 2*x*d2fi(i-1, x) - 2*n*d2fi(i-2, x);
 }
 
 /* Trzecia pochodna fi */

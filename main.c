@@ -33,7 +33,7 @@ main (int argc, char **argv)
   double fromX = 0;
   double toX = 0;
   int n = 100;
-	char *progname= argv[0];
+  char *progname= argv[0];
 
   points_t pts;
   spline_t spl;
@@ -106,7 +106,8 @@ main (int argc, char **argv)
 			write_spl (&spl, ouf);
 
     fclose (ouf);
-  } else if (out != NULL) {  /* if point-file was NOT given, try to read splines from a file */
+  }
+  else if (out != NULL) {  /* if point-file was NOT given, try to read splines from a file */
     FILE *splf = fopen (out, "r");
     if (splf == NULL) {
       fprintf (stderr, "%s: can not read spline file: %s\n\n", argv[0], inp);

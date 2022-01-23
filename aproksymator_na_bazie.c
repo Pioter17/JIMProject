@@ -29,6 +29,7 @@ dfi(int i, double x)
 		return 0;
 	if (i == 1)
 		return 2;
+
 	return 2*fi(i-1, x) + 2*x*dfi(i-1, x) - 2*(i-1)*dfi(i-2, x);	
 }
 
@@ -43,32 +44,23 @@ d2fi(int i, double x)
 	if( i == 2 )
 		return 8;
 	
-	return 4*dfi(i-1, x) + 2*x*d2fi(i-1, x) - 2*n*d2fi(i-2, x);
+	return 4*dfi(i-1, x) + 2*x*d2fi(i-1, x) - 2*(i-1)*d2fi(i-2, x);
 }
 
 /* Trzecia pochodna fi */
 double
-d3fi(double a, double b, int n, int i, double x)
+d3fi(int i, double x)
 {
-	double		h = (b - a) / (n - 1);
-	double		h3 = h * h * h;
-	int		hi         [5] = {i - 2, i - 1, i, i + 1, i + 2};
-	double		hx      [5];
-	int		j;
-
-	for (j = 0; j < 5; j++)
-		hx[j] = a + h * hi[j];
-
-	if ((x < hx[0]) || (x > hx[4]))
+	if (i == 0)
 		return 0;
-	else if (x >= hx[0] && x <= hx[1])
-		return 6 / h3;
-	else if (x > hx[1] && x <= hx[2])
-		return -18 / h3;
-	else if (x > hx[2] && x <= hx[3])
-		return 18 / h3;
-	else			/* if (x > hx[3]) && (x <= hx[4]) */
-		return -6 / h3;
+	if (i == 1)
+		return 0;
+	if (i == 2)
+		return 0;
+	if (i == 3)
+		return 48;
+
+	return 6*d2fi(i-1, x) + 2*x*d3fi(i-1, x) - 2*(i-1)*d3fi(i-2, x);
 }
 
 /* Pomocnicza f. do rysowania bazy */

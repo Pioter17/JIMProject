@@ -11,6 +11,7 @@
 
 // i -> numer wielomianu
 // x -> parametr
+double
 fi(int i, double x)
 {
 	if( i == 0 )

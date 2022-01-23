@@ -92,8 +92,6 @@ make_spl(points_t * pts, spline_t * spl)
 	matrix_t       *eqs= NULL;
 	double         *x = pts->x;
 	double         *y = pts->y;
-	double		a = x[0];
-	double		b = x[pts->n - 1];
 	int		i, j, k;
 	int		nb = pts->n - 3 > 10 ? 10 : pts->n - 3;
   char *nbEnv= getenv( "APPROX_BASE_SIZE" );
@@ -127,10 +125,10 @@ make_spl(points_t * pts, spline_t * spl)
 	for (j = 0; j < nb; j++) {
 		for (i = 0; i < nb; i++)
 			for (k = 0; k < pts->n; k++)
-				add_to_entry_matrix(eqs, j, i, fi(a, b, nb, i, x[k]) * fi(a, b, nb, j, x[k]));
+				add_to_entry_matrix(eqs, j, i, fi(i, x[k]) * fi(j, x[k]));
 
 		for (k = 0; k < pts->n; k++)
-			add_to_entry_matrix(eqs, j, nb, y[k] * fi(a, b, nb, j, x[k]));
+			add_to_entry_matrix(eqs, j, nb, y[k] * fi(j, x[k]));
 	}
 
 #ifdef DEBUG
@@ -147,18 +145,18 @@ make_spl(points_t * pts, spline_t * spl)
 
 	if (alloc_spl(spl, nb) == 0) {
 		for (i = 0; i < spl->n; i++) {
-			double xx = spl->x[i] = a + i*(b-a)/(spl->n-1);
-			xx+= 10.0*DBL_EPSILON;  // zabezpieczenie przed ulokowaniem punktu w poprzednim przedziale
+			double xx = spl->x[i] = x[i];
+			//xx+= 10.0*DBL_EPSILON;  // zabezpieczenie przed ulokowaniem punktu w poprzednim przedziale
 			spl->f[i] = 0;
 			spl->f1[i] = 0;
 			spl->f2[i] = 0;
 			spl->f3[i] = 0;
 			for (k = 0; k < nb; k++) {
-				double		ck = get_entry_matrix(eqs, k, nb);
-				spl->f[i]  += ck * fi  (a, b, nb, k, xx);
-				spl->f1[i] += ck * dfi (a, b, nb, k, xx);
-				spl->f2[i] += ck * d2fi(a, b, nb, k, xx);
-				spl->f3[i] += ck * d3fi(a, b, nb, k, xx);
+				double ck = get_entry_matrix(eqs, k, nb);
+				spl->f[i]  += ck * fi  (k, xx);
+				spl->f1[i] += ck * dfi (k, xx);
+				spl->f2[i] += ck * d2fi(k, xx);
+				spl->f3[i] += ck * d3fi(k, xx);
 			}
 		}
 	}

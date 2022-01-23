@@ -2,17 +2,29 @@
 
 #include <stdlib.h>
 
-#define MALLOC_FAILED( P, SIZE ) (((P)=malloc( (SIZE)*sizeof( *(P))))==NULL)
+//#define MALLOC_FAILED( P, SIZE ) (((P)=malloc( (SIZE)*sizeof( *(P))))==NULL)
 
 int
 alloc_spl (spline_t * spl, int n)
 {
+
+  double *tmpx = malloc(n*sizeof(*tmpx));
+  double *tmpf = malloc(n*sizeof(*tmpf));
+  double *tmpf1 = malloc(n*sizeof(*tmpf1));
+  double *tmpf2 = malloc(n*sizeof(*tmpf2));
+  double *tmpf3 = malloc(n*sizeof(*tmpf3));
+
   spl->n = n;
-  return MALLOC_FAILED (spl->x, spl->n)
-    || MALLOC_FAILED (spl->f, spl->n)
-    || MALLOC_FAILED (spl->f1, spl->n)
-    || MALLOC_FAILED (spl->f2, spl->n)
-    || MALLOC_FAILED (spl->f3, spl->n);
+
+  if( tmpx == NULL || tmpf == NULL || tmpf1 == NULL || tmpf2 == NULL || tmpf3 == NULL ) { 
+  	free(tmpx);  
+  	free(tmpf);  
+  	free(tmpf1);  
+  	free(tmpf2);  
+  	free(tmpf3);
+      	return 1;	
+  }
+  return 0;
 }
 
 int

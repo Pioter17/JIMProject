@@ -160,8 +160,8 @@ main (int argc, char **argv)
     fclose (gpf);
   }
 
-  free_points(&pts);
   free_splines(&spl);
+  free_points(&pts);
 
   return 0;
 }

@@ -75,10 +75,10 @@ make_spl(points_t * pts, spline_t * spl)
 	double         *y = pts->y;
 	int		i, j, k;
 	int		nb = pts->n - 3 > 10 ? 10 : pts->n - 3;
-  	//char *nbEnv= getenv( "APPROX_BASE_SIZE" );
+  	char *nbEnv= getenv( "APPROX_BASE_SIZE" );
 
-	//if( nbEnv != NULL && atoi( nbEnv ) > 0 )
-	//	nb = atoi( nbEnv );
+	if( nbEnv != NULL && atoi( nbEnv ) > 0 )
+		nb = atoi( nbEnv );
 
 	eqs = make_matrix(nb, nb + 1);
 

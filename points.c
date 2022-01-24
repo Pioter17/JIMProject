@@ -1,29 +1,35 @@
 #include "points.h"
 #include <stdlib.h>
 
+
+void free_points(points_t * pts) {
+	free(pts->x);
+	free(pts->y);
+}
+
+
 static int
 realloc_pts_failed (points_t * pts, int size)
 {
-	double *tmpx, *tmpy;
-	tmpx = realloc(pts->x, size * sizeof *pts->x);
-	tmpy = realloc(pts->y, size * sizeof *pts->y);
-  	if (tmpx == NULL || tmpy == NULL)
+        // double *tmpx, *tmpy;
+	pts->x = realloc(pts->x, size * sizeof *pts->x);
+  	pts->y = realloc(pts->y, size * sizeof *pts->y);
+	if (pts->x == NULL || pts->y == NULL)
 	{
-		free(tmpx);
-		free(tmpy);
+		free(pts->x);
+		free(pts->y);
 		return 1;
 	}
-	pts->x = tmpx;
-	pts->y = tmpy;
+	// pts->x = tmpx;
+	// pts->y = tmpy;
 	return 0;
-	
 	//return pts->x == NULL || pts->y == NULL;
 }
 
 int
 read_pts_failed (FILE * inf, points_t * pts)
 {
-  int size, a, b;
+  int size;
   double x, y;
 
   if (pts->n == 0) {
@@ -37,17 +43,17 @@ read_pts_failed (FILE * inf, points_t * pts)
     }
     size = 100;
   }
-  else
+  else {
     size = pts->n;
+  }
+
 
   while (fscanf (inf, "%lf %lf", &x, &y) == 2) {
     pts->x[pts->n] = x;
     pts->y[pts->n] = y;
     pts->n++;
     if (!feof (inf) && pts->n == size) {
-      	if (a = realloc_pts_failed (pts, 2 * size)){
-        	free(pts->x);
-		free(pts->y);
+      	if (realloc_pts_failed (pts, 2 * size)){
 		return 1;
     	}
       	else
@@ -56,9 +62,7 @@ read_pts_failed (FILE * inf, points_t * pts)
   }
 
   if (pts->n != size)
-    	if (b = realloc_pts_failed (pts, pts->n)){
-		free(pts->x);
-		free(pts->y);
+    	if (realloc_pts_failed (pts, pts->n)){
       		return 1;
     	}
 
